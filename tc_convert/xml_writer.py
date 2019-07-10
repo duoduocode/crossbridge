@@ -2,8 +2,11 @@ import traceback
 from xml.dom import minidom
 from tc_convert.common import TEST_SUITE, NAME, IMPORTANCE, TEST_TYPE, KEY_WORD, SUMMARY, PRECONDITIONS, STEP_NUMBER, \
     ACTIONS, EXPECTRESULTS, STEPS, STEP, TC_NAME, TC_STEPS
+import os
+import sys
 
 def write_xml(ts_dict,modulename):
+    xml_path=os.path.expanduser('~')+'/'+modulename+'.xml'
     dom = minidom.Document()
     root_node = dom.createElement(TEST_SUITE)
     root_node.setAttribute("name", modulename)
@@ -58,11 +61,11 @@ def write_xml(ts_dict,modulename):
 
 
     try:
-        with open('/home/xdtu/code/crossbridge/test.xml', 'w', encoding='UTF-8') as fh:
+        with open(xml_path, 'w', encoding='UTF-8') as fh:
             # 4.writexml()第一个参数是目标文件对象，第二个参数是根节点的缩进格式，第三个参数是其他子节点的缩进格式，
             # 第四个参数制定了换行格式，第五个参数制定了xml内容的编码。
             dom.writexml(fh, indent='', addindent='\t', newl='\n', encoding='UTF-8')
-        print('写入xml OK!')
+        print('XML已生成到%s' % xml_path)
     except Exception as err:
         traceback.print_exc()
         print('错误信息：{0}'.format(err))

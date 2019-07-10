@@ -1,2 +1,3 @@
 openpyxl==2.6.2
 lxml==4.3.4
+Pyinstaller==3.5
