@@ -3,7 +3,6 @@ from xml.dom import minidom
 from tc_convert.common import TEST_SUITE, NAME, IMPORTANCE, TEST_TYPE, KEY_WORD, SUMMARY, PRECONDITIONS, STEP_NUMBER, \
     ACTIONS, EXPECTRESULTS, STEPS, STEP, TC_NAME, TC_STEPS, PRI_DICT
 import os
-import sys
 
 def write_xml(ts_dict,modulename):
     xml_path=os.path.expanduser('~')+'/'+modulename+'.xml'
@@ -14,12 +13,15 @@ def write_xml(ts_dict,modulename):
     for k1,v1 in ts_dict.items():
         module_node=dom.createElement(TEST_SUITE)
         module_node.setAttribute("name", k1)
+        print('module_name is %s' % k1)
         for k, v in v1.items():
 
             testsuite_node = dom.createElement(TEST_SUITE)
             testsuite_node.setAttribute("name", k)
 
             for ele in v:
+                if ele[PRECONDITIONS] is None or ele[IMPORTANCE] is None:
+                    continue
                 testcase_node = dom.createElement('testcase')
                 testcase_node.setAttribute(NAME, ele['name'])
 

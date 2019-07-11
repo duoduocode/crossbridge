@@ -32,6 +32,4 @@ def convert(path):
 if __name__ == "__main__":
     path=input("请输入需要转换的文件路径")
     print("你输入的路径为%s" % path)
-    mode = input("请输入需要执行的转换模式\n1:产品全量用例\n2:特性全量用例\n3:测试点下全量用例(目前只支持1)")
-    print("你输入的转换模式为%s" % mode)
     convert(path)
