@@ -13,3 +13,4 @@ STEPS = 'steps'
 STEP = 'step'
 TC_NAME = '测试用例名称'
 TC_STEPS = '测试步骤'
+PRI_DICT={'P0':'3','P1':'2','P2':'1'}

@@ -1,7 +1,7 @@
 import traceback
 from xml.dom import minidom
 from tc_convert.common import TEST_SUITE, NAME, IMPORTANCE, TEST_TYPE, KEY_WORD, SUMMARY, PRECONDITIONS, STEP_NUMBER, \
-    ACTIONS, EXPECTRESULTS, STEPS, STEP, TC_NAME, TC_STEPS
+    ACTIONS, EXPECTRESULTS, STEPS, STEP, TC_NAME, TC_STEPS, PRI_DICT
 import os
 import sys
 
@@ -15,6 +15,7 @@ def write_xml(ts_dict,modulename):
         module_node=dom.createElement(TEST_SUITE)
         module_node.setAttribute("name", k1)
         for k, v in v1.items():
+
             testsuite_node = dom.createElement(TEST_SUITE)
             testsuite_node.setAttribute("name", k)
 
@@ -23,7 +24,7 @@ def write_xml(ts_dict,modulename):
                 testcase_node.setAttribute(NAME, ele['name'])
 
                 importance_node = dom.createElement(IMPORTANCE)
-                importance_node.appendChild(dom.createTextNode(ele[IMPORTANCE]))
+                importance_node.appendChild(dom.createTextNode(PRI_DICT[ele[IMPORTANCE]]))
 
                 pre_node = dom.createElement(PRECONDITIONS)
                 pre_node.appendChild(dom.createTextNode(ele[PRECONDITIONS]))
@@ -55,8 +56,10 @@ def write_xml(ts_dict,modulename):
                 testcase_node.appendChild(pre_node)
                 testcase_node.appendChild(steps_node)
                 testsuite_node.appendChild(testcase_node)
-
-            module_node.appendChild(testsuite_node)
+                if k is None:
+                    module_node.appendChild(testcase_node)
+            if k is not None:
+                module_node.appendChild(testsuite_node)
         root_node.appendChild(module_node)
 
 

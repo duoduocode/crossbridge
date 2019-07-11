@@ -6,6 +6,9 @@ from tc_convert.common import TEST_SUITE, NAME, IMPORTANCE, TEST_TYPE, KEY_WORD,
 
 
 def get_upper_name(ws, cell, num):
+    if num == 0:
+        return None
+
     cur_cell = cell
     tc_name = ws[cur_cell.row][cur_cell.column - num].value
     if tc_name is None:
@@ -19,21 +22,32 @@ def get_upper_name(ws, cell, num):
 
 
 def get_tc_info_dict(ws):
+    upper_step = 2
+    tc_column = 'B'
+    if ws[1][0].value == TC_NAME:
+        upper_step = 0
+        tc_column = 'A'
+
     return {
         a.value: {NAME: a.value, IMPORTANCE: ws[a.row][a.column].value, TEST_TYPE: ws[a.row][a.column + 1].value,
                   KEY_WORD: ws[a.row][a.column + 2].value,
                   SUMMARY: ws[a.row][a.column + 3].value, PRECONDITIONS: ws[a.row][a.column + 4].value, STEPS: [],
-                  TEST_SUITE: get_upper_name(ws, a, 2)
+                  TEST_SUITE: get_upper_name(ws, a, upper_step)
                   }
-        for a in ws['B'] if
+        for a in ws[tc_column] if
         (a.value is not None and a.value != TC_NAME)}
 
 
 def get_tc_step_data_dict(ws):
+    tc_column = 'H'
+    if ws[1][0].value == TC_NAME:
+        tc_column = 'G'
+
     return [
         {get_upper_name(ws, a, 7):
-             {STEP_NUMBER: 1, ACTIONS: a.value, EXPECTRESULTS: ws[a.row][a.column].value}} for a in ws['H'] if
+             {STEP_NUMBER: 1, ACTIONS: a.value, EXPECTRESULTS: ws[a.row][a.column].value}} for a in ws[tc_column] if
         (a.value is not None and a.value != TC_STEPS)]
+
 
 def get_ts_dict(tc_step_data_dict, tc_info_dict):
     ts_dict = {}
